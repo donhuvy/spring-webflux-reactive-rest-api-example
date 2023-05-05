@@ -24,21 +24,21 @@ public class UserInitializer implements CommandLineRunner {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-    
+
     @Override
     public void run(String... args) {
-            initialDataSetup();
+        initialDataSetup();
     }
 
-    private List<User> getData(){
-        return Arrays.asList(new User(null,"Suman Das",30,10000),
-                             new User(null,"Arjun Das",5,1000),
-                             new User(null,"Saurabh Ganguly",40,1000000));
+    private List<User> getData() {
+        return Arrays.asList(new User(null, "Suman Das", 30, 10000),
+                new User(null, "Arjun Das", 5, 1000),
+                new User(null, "Saurabh Ganguly", 40, 1000000));
     }
 
-    private List<Department> getDepartments(){
-        return Arrays.asList(new Department(null,"Mechanical",1,"Mumbai"),
-                new Department(null,"Computer",2,"Bangalore"));
+    private List<Department> getDepartments() {
+        return Arrays.asList(new Department(null, "Mechanical", 1, "Mumbai"),
+                new Department(null, "Computer", 2, "Bangalore"));
     }
 
     private void initialDataSetup() {

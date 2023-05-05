@@ -12,6 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfiguration implements WebFluxConfigurer {
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -29,4 +30,5 @@ public class SwaggerConfiguration implements WebFluxConfigurer {
                 .description("Reactive Stream Starter Demo")
                 .version("1.0").build();
     }
+
 }

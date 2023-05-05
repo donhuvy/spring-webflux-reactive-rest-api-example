@@ -26,20 +26,28 @@ public class UserService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+    private final BiFunction<User, Department, UserDepartmentDTO> userDepartmentDTOBiFunction = (x1, x2) -> UserDepartmentDTO.builder()
+            .age(x1.getAge())
+            .departmentId(x2.getId())
+            .departmentName(x2.getName())
+            .userName(x1.getName())
+            .userId(x1.getId())
+            .loc(x2.getLoc())
+            .salary(x1.getSalary()).build();
 
-    public Mono<User> createUser(User user){
+    public Mono<User> createUser(User user) {
         return userRepository.save(user);
     }
 
-    public Flux<User> getAllUsers(){
+    public Flux<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public Mono<User> findById(Integer userId){
+    public Mono<User> findById(Integer userId) {
         return userRepository.findById(userId);
     }
 
-    public Mono<User> updateUser(Integer userId,  User user){
+    public Mono<User> updateUser(Integer userId, User user) {
         return userRepository.findById(userId)
                 .flatMap(dbUser -> {
                     dbUser.setAge(user.getAge());
@@ -48,13 +56,13 @@ public class UserService {
                 });
     }
 
-    public Mono<User> deleteUser(Integer userId){
+    public Mono<User> deleteUser(Integer userId) {
         return userRepository.findById(userId)
                 .flatMap(existingUser -> userRepository.delete(existingUser)
-                .then(Mono.just(existingUser)));
+                        .then(Mono.just(existingUser)));
     }
 
-    public Flux<User> findUsersByAge(int age){
+    public Flux<User> findUsersByAge(int age) {
         return userRepository.findByAge(age);
     }
 
@@ -66,23 +74,14 @@ public class UserService {
                 .ordered((u1, u2) -> u2.getId() - u1.getId());
     }
 
-    private Mono<Department> getDepartmentByUserId(Integer userId){
+    private Mono<Department> getDepartmentByUserId(Integer userId) {
         return departmentRepository.findByUserId(userId);
     }
 
-    public Mono<UserDepartmentDTO> fetchUserAndDepartment(Integer userId){
+    public Mono<UserDepartmentDTO> fetchUserAndDepartment(Integer userId) {
         Mono<User> user = findById(userId).subscribeOn(Schedulers.elastic());
         Mono<Department> department = getDepartmentByUserId(userId).subscribeOn(Schedulers.elastic());
         return Mono.zip(user, department, userDepartmentDTOBiFunction);
     }
-
-    private BiFunction<User, Department, UserDepartmentDTO> userDepartmentDTOBiFunction = (x1, x2) -> UserDepartmentDTO.builder()
-            .age(x1.getAge())
-            .departmentId(x2.getId())
-            .departmentName(x2.getName())
-            .userName(x1.getName())
-            .userId(x1.getId())
-            .loc(x2.getLoc())
-            .salary(x1.getSalary()).build();
 
 }

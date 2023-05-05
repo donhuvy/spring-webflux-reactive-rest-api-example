@@ -12,10 +12,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 @Table("department")
 public class Department {
+
     @Id
     private Integer id;
+
     private String name;
+
     @Column("user_id")
     private Integer userId;
+
     private String loc;
 }

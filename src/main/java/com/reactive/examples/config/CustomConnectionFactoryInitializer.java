@@ -10,6 +10,7 @@ import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePop
 
 @Configuration
 public class CustomConnectionFactoryInitializer {
+
     @Bean
     public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
         ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
@@ -19,4 +20,5 @@ public class CustomConnectionFactoryInitializer {
         initializer.setDatabasePopulator(populator);
         return initializer;
     }
+
 }
